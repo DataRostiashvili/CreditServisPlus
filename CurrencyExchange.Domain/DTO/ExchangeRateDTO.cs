@@ -8,7 +8,8 @@ namespace CurrencyExchange.Domain.DTO
 {
     public class ExchangeRateDTO
     {
-        public DateOnly Date { get; set; }
+        public DateTime Date { get; set; }
+
         public decimal USD { get; set; }
         public decimal EUR { get; set; }
         public decimal GBP { get; set; }

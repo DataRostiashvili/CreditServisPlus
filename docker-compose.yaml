@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  postgres:
+  mssql:
     image:  mcr.microsoft.com/mssql/server:2019-CU14-ubuntu-20.04
     container_name: currency_exchange_mssql
     ports:
@@ -9,5 +9,3 @@ services:
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=yourStrong(!)Password
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=mysecretpassword

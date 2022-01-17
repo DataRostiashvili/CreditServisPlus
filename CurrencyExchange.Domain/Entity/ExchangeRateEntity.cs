@@ -8,7 +8,8 @@ namespace CurrencyExchange.Domain.Entity
 {
     public sealed class ExchangeRateEntity
     {
-        public DateOnly Date { get; set; }
+        public int ExchangeRateId { get; set; }
+        public DateTime Date { get; set; }
 
 
         public decimal USD { get; set; }

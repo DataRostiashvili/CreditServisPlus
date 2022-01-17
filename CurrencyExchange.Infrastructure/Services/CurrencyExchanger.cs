@@ -11,6 +11,7 @@ namespace CurrencyExchange.Infrastructure.Services
 {
     public interface ICurrencyExchanger
     {
+        ValueTask<decimal> ExchangeAsync(Currency origin, Currency destination, decimal amount, ExchangeRateDTO prefetchedRate = null);
         Task<ExchangeRateDTO> GetExchangeRateAsync();
     }
 
@@ -20,36 +21,42 @@ namespace CurrencyExchange.Infrastructure.Services
         readonly HttpClient _httpClient = new();
 
 
-        public async ValueTask<decimal> ExchangeAsync(Currency origin, Currency destination, decimal amount)
+
+        public async ValueTask<decimal> ExchangeAsync(Currency origin, Currency destination, decimal amount, ExchangeRateDTO prefetchedRate = null)
         {
             var exchangeToGEL = async (Currency origin, decimal amount) =>
             {
-                var rates = await GetExchangeRateAsync();
+                var rates = prefetchedRate ?? await GetExchangeRateAsync();
                 return origin switch
                 {
                     Currency.USD => rates.USD * amount,
                     Currency.EUR => rates.EUR * amount,
-                    Currency.RUB => rates.RUB * amount,
+                    Currency.RUB => (rates.RUB * amount) / 100,
                     Currency.GBP => rates.GBP * amount,
                 };
             };
 
             var exchangeFromGEL = async (Currency destination, decimal amount) =>
             {
-                var rates = await GetExchangeRateAsync();
+                var rates = prefetchedRate ??  await GetExchangeRateAsync();
                 return destination switch
                 {
                     Currency.USD => amount / rates.USD,
                     Currency.EUR => amount / rates.EUR,
-                    Currency.RUB => amount / rates.RUB,
+                    Currency.RUB => (amount / rates.RUB) * 100,
                     Currency.GBP => amount / rates.GBP,
                 };
             };
+            if(origin == Currency.GEL)
+            {
+              return  await  exchangeFromGEL(destination, amount);
+            } 
+            else if(destination == Currency.GEL)
+            {
+                return await exchangeToGEL(origin, amount);
+            }
 
-            decimal normalised = await exchangeToGEL(origin, amount);
-            var result = await exchangeFromGEL(destination, normalised);
-
-            return result;
+            throw new ArgumentException();
         }
         public async Task<ExchangeRateDTO> GetExchangeRateAsync()
         {
@@ -71,7 +78,7 @@ namespace CurrencyExchange.Infrastructure.Services
                 USD = queryExchangeRate(jArray, "USD"),
                 GBP = queryExchangeRate(jArray, "GBP"),
 
-                Date = DateOnly.FromDateTime(DateTime.Now)
+                Date = DateTime.Now
 
             };
         }

@@ -13,7 +13,7 @@ namespace CurrencyExchange.Infrastructure.Mappings
     {
         public Mappings()
         {
-            CreateMap<ExchangeRateEntity, ExchangeRateDTO>();
+            CreateMap<ExchangeRateEntity, ExchangeRateDTO>().ReverseMap();
         }
     }
 }

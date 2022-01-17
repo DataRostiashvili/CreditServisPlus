@@ -13,7 +13,7 @@ namespace CurrencyExchange.Infrastructure.Data.DbContexts
         public DbSet<ExchangeRateEntity> ExchangeHistory { get; set; }
 
 
-        public CurrencyExchangeDbContext(DbContextOptions options) : base (options)
+        public CurrencyExchangeDbContext(DbContextOptions options) : base(options)
         {
 
         }
@@ -21,16 +21,21 @@ namespace CurrencyExchange.Infrastructure.Data.DbContexts
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
-            builder.Entity<ExchangeRateEntity>().ToTable("exchange_rate");
+            builder.Entity<ExchangeRateEntity>()
+                .ToTable("exchange_rate");
+
+            builder.Entity<ExchangeRateEntity>()
+                .HasKey(e => e.ExchangeRateId);
 
             //seed data
-           
+
             builder.Entity<ExchangeRateEntity>()
                 .HasData(new[]
                 {
                     new ExchangeRateEntity
                     {
-                        Date = DateOnly.FromDateTime( DateTime.Now.AddDays(-1)),
+                        ExchangeRateId = -1,
+                        Date = DateTime.Now.AddDays(-1),
                         EUR = 3.5m,
                         GBP = 3.9m,
                         RUB = 0.12m,
@@ -38,7 +43,8 @@ namespace CurrencyExchange.Infrastructure.Data.DbContexts
                     },
                     new ExchangeRateEntity
                     {
-                        Date = DateOnly.FromDateTime( DateTime.Now.AddDays(-2)),
+                        ExchangeRateId = -2,
+                        Date =  DateTime.Now.AddDays(-2),
                         EUR = 3.1m,
                         GBP = 3.39m,
                         RUB = 0.512m,
@@ -46,7 +52,8 @@ namespace CurrencyExchange.Infrastructure.Data.DbContexts
                     },
                     new ExchangeRateEntity
                     {
-                        Date = DateOnly.FromDateTime( DateTime.Now.AddDays(-3)),
+                        ExchangeRateId = -3,
+                        Date = DateTime.Now.AddDays(-3),
                         EUR = 3.35m,
                         GBP = 3.19m,
                         RUB = 0.312m,
