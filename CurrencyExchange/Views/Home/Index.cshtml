@@ -1,0 +1,34 @@
+﻿@model CurrencyExchange.Web.Models.ExchangeRequestViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<form action="@Url.Action("Index", "")" method="post">
+    <div class="item">
+        <label >Client Name</label>
+    <input type="text" name="ClientName" />
+    </div>
+    <div class="item">
+        <label >PersonalNumber</label>
+    <input type="text" name="PersonalNumber" />
+    </div>
+    <div class="item">
+        <label >Origin Currency</label>
+    
+     <select asp-items="@ViewBag.Currencies"></select>
+    </div>
+
+
+    <div class="item">
+        <label>Destination Currency</label>
+         <select  asp-items="@ViewBag.Currencies"></select>
+
+    </div>
+
+    <div class="item">
+        <label>Amount</label>
+    <input type="number" name="Amount" />
+    </div>
+
+    <input type='submit' />
+</form>
