@@ -3,32 +3,53 @@
     ViewData["Title"] = "Home Page";
 }
 
-<form action="@Url.Action("Index", "")" method="post">
-    <div class="item">
-        <label >Client Name</label>
-    <input type="text" name="ClientName" />
-    </div>
-    <div class="item">
-        <label >PersonalNumber</label>
-    <input type="text" name="PersonalNumber" />
-    </div>
-    <div class="item">
-        <label >Origin Currency</label>
-    
-     <select asp-items="@ViewBag.Currencies"></select>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ClientName)
+
+        @Html.EditorFor(model => model.ClientName)
+
+        @Html.ValidationMessageFor(model => model.ClientName)
     </div>
 
 
-    <div class="item">
-        <label>Destination Currency</label>
-         <select  asp-items="@ViewBag.Currencies"></select>
+    <div class="form-group">
+        @Html.LabelFor(model => model.PersonalNumber)
 
+        @Html.EditorFor(model => model.PersonalNumber)
+
+        @Html.ValidationMessageFor(model => model.PersonalNumber)
     </div>
 
-    <div class="item">
-        <label>Amount</label>
-    <input type="number" name="Amount" />
+    <div class="form-group">
+        @Html.LabelFor(model => model.OriginCurrency)
+
+        @Html.DropDownListFor(model => model.OriginCurrency, ViewBag.Currencies as SelectList)
+
+        @Html.ValidationMessageFor(model => model.OriginCurrency)
     </div>
 
-    <input type='submit' />
-</form>
+    <div class="form-group">
+        @Html.LabelFor(model => model.DestinationCurrency)
+
+        @Html.DropDownListFor(model => model.DestinationCurrency, ViewBag.Currencies as SelectList)
+
+        @Html.ValidationMessageFor(model => model.DestinationCurrency)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Amount)
+
+        @Html.EditorFor(model => model.Amount)
+
+        @Html.ValidationMessageFor(model => model.Amount)
+    </div>
+
+    <div class="form-group">
+        <input type="submit" />
+    </div>
+}

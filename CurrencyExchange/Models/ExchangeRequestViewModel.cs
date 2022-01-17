@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CurrencyExchange.Domain.interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace CurrencyExchange.Web.Models
 
@@ -7,9 +8,9 @@ namespace CurrencyExchange.Web.Models
     {
 
         [Required]
-        [RegularExpression(@"^\w+[ ]\w+$")] //match only two words seperated by a space
+        [RegularExpression(@"^\w+[ ]\w+$", ErrorMessage = "field should contain two words")] //match only two words seperated by a space
         public string ClientName { get; set; }
-        [Required, MaxLength(11), MinLength(11)]
+        [Required, RegularExpression(@"\d{11}", ErrorMessage = "field should consist of 11 digits")]
         public string PersonalNumber { get; set; }
 
 
@@ -20,12 +21,5 @@ namespace CurrencyExchange.Web.Models
         public decimal Amount { get; set; }
     }
 
-    public enum Currency
-    {
-        GEL = 1,
-        USD,
-        EUR,
-        RUB,
-        GBP
-    }
+   
 }
